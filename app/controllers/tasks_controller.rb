@@ -3,17 +3,9 @@ class TasksController < ApplicationController
 
   # GET /tasks
   def index
-  if params[:q] && params[:q][:deadline_lteq].present?
-    begin
-      params[:q][:deadline_lteq] = Time.zone.parse(params[:q][:deadline_lteq]).end_of_day
-    rescue ArgumentError, TypeError
-      # ignore parse errors; ransack will simply not filter by that param
-    end
+    @q = Task.ransack(params[:q])
+    @tasks = @q.result(distinct: true)
   end
-
-  @q = Task.ransack(params[:q])
-  @tasks = @q.result(distinct: true)
-end
 
   # GET /tasks/1
   def show
