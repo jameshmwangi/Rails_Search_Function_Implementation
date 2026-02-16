@@ -3,6 +3,12 @@ class Task < ApplicationRecord
   validates :title, presence: true
   validates :status, presence: true
   validates :deadline, presence: true
+ def self.ransackable_attributes(auth_object = nil)
+  ["title", "description", "id", "status", "deadline", "updated_at"]
+end
+  def self.ransackable_associations(auth_object = nil)
+    []
+  end
   # validate :deadline, :must_start_from_today
 
   # def must_start_from_today
